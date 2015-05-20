@@ -9,16 +9,16 @@ namespace blib { class Texture; class Font; }
 class Pong : public ScoreGame<PongPlayer>
 {
 	blib::Texture* backSprite;
-	blib::Texture* trashSprite;
+	blib::Texture* ballSprite;
 	blib::Texture* playerSprite;
 	blib::Font* font;
 
 	boolean positive;
-	int trashCount;
+	double rotation;
 	int turningFactor;
-	int speed;
+	float speed;
 
-	std::vector<glm::vec2> trash;
+	std::vector<glm::vec2> ball;
 
 public:
 	virtual std::pair<int, int> getPlayerCount() { return std::pair<int, int>(1, 100); }
@@ -33,3 +33,10 @@ public:
 
 
 
+
+
+
+
+extern "C" {
+	__declspec(dllexport) GameBase* getGame();
+}
