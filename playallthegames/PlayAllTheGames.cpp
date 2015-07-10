@@ -41,7 +41,7 @@
 using blib::util::Log;
 
 
-#define DEBUGGAME "ShowDown"
+#define DEBUGGAME "Pong"
 
 #ifdef _DEBUG
 #define PREGAMETIME 0

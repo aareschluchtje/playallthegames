@@ -124,7 +124,7 @@ void Pong::update(float elapsedTime)
 			speed += 0.5;
 			rotation -= 1;
 		}
-		if (glm::length(ball[0] - p->position) < 50)
+		if (checkCollision(p) > 1)
 		{
 			ball[0].x -= 20 * elapsedTime;
 		}
@@ -147,6 +147,57 @@ void Pong::draw()
 		spriteBatch->draw(font, blib::util::toString(players[i]->score), blib::math::easyMatrix(glm::vec2(10, 64 * i), 0, 1), players[i]->participant->color);
 
 	spriteBatch->end();
+}
+
+float Pong::checkCollision(PongPlayer player)
+{
+	float angle1 = 2 * M_PI;
+	float angle2 = angle1;
+	glm::vec2 p1 = glm::vec2(player.position.x-25,player.position.y-100);
+	glm::vec2 p2 = glm::vec2(player.position.x + 25, player.position.y - 100);
+	glm::vec2 p3 = glm::vec2(player.position.x + 25, player.position.y + 100);
+	glm::vec2 p4 = glm::vec2(player.position.x - 25, player.position.y + 100);
+	
+	rotatePoint(player.position, player.rotation, p1);
+	rotatePoint(player.position, player.rotation, p2);
+	rotatePoint(player.position, player.rotation, p3);
+	rotatePoint(player.position, player.rotation, p4);
+
+
+	//width 50 and heigth 200
+	
+}
+
+float Pong::calculateAngle(glm::vec2 vector1, glm::vec2 vector2, glm::vec2 vector0) // function calulates angel between 2 lines were vector0 is your origen 0,0 x,y 
+{
+	vector1.x -= vector0.x;
+	vector2.x -= vector0.x;
+	vector1.y -= vector0.y;
+	vector2.y -= vector0.y;
+
+	float dot = vector1.x*vector2.x + vector1.y*vector2.y;      // dot product
+	float det = vector1.x*vector2.y - vector1.y*vector2.x;      // determinant
+	float angle = atan2(det, dot);   //atan2(y, x) or atan2(sin, cos)
+	return angle;
+}
+
+glm::vec2 rotatePoint(glm::vec2 rotatePoint, float angle, glm::vec2 point)
+{
+	float s = sin(angle);
+	float c = cos(angle);
+
+	// translate point back to origin:
+	point.x -= rotatePoint.x;
+	point.y -= rotatePoint.y;
+
+	// rotate point
+	float xnew = point.x * c - point.y * s;
+	float ynew = point.x * s + point.y * c;
+
+	// translate point back:
+	point.x = xnew + cx;
+	point.y = ynew + cy;
+	return point;
 }
 
 blib::Texture* Pong::getTitleImage()
